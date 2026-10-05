@@ -19,7 +19,12 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 PORT = int(os.environ.get("MCP_PORT", "7301"))
-SECRET = os.environ.get("REQUEST_STATE_SECRET", "default_secret_32_bytes_minimum_string_123456789_mcp").encode()
+
+secret_val = os.environ.get("REQUEST_STATE_SECRET")
+if not secret_val:
+    sys.stderr.write("Erro: Variavel de ambiente REQUEST_STATE_SECRET nao definida.\n")
+    sys.exit(1)
+SECRET = secret_val.encode()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALAS_FILE = os.path.join(BASE_DIR, "dados", "salas.json")
